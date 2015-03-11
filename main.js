@@ -108,7 +108,14 @@ $(function($) {
   function traverseTree(index) {
     var value, $field;
 
-    index = index || 0;
+    if (index === undefined) {
+      index = 0;
+      while ((index += 1) < $fields.length) {
+        if (!$fields[index].prop('disabled')) {
+          break;
+        }
+      }
+    }
 
     if (index < 0) {
       complete();
