@@ -109,7 +109,7 @@ $(function($) {
     var value, $field;
 
     if (index === undefined) {
-      index = 0;
+      index = -1;
       while ((index += 1) < $fields.length) {
         if (!$fields[index].prop('disabled')) {
           break;
