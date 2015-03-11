@@ -6,6 +6,8 @@ $(function($) {
   $groups = [];
   $fields = [];
 
+  currentfield = 0;
+
   /**
    * @param fieldid
    * @return the row of the field
@@ -67,12 +69,12 @@ $(function($) {
     }
 
     $form.append($('<input>').attr('type', 'submit').val('Sudoku lösen'));
-    $form.append($('<input>').attr('type', 'button').val('reset').click(
-        function(e) {
-          resetSudoku();
-          e.preventDefault();
-          return false;
-        }));
+    // $form.append($('<input>').attr('type', 'button').val('reset').click(
+    // function(e) {
+    // resetSudoku();
+    // e.preventDefault();
+    // return false;
+    // }));
 
     $form.on('submit', function(e) {
       window.setTimeout(solveSudoku, 1);
@@ -93,7 +95,9 @@ $(function($) {
     });
 
     traverseTree();
+  }
 
+  function complete() {
     if (isComplete()) {
       $('form').append($('<div>').text('Fertig.'));
     } else {
@@ -106,28 +110,47 @@ $(function($) {
 
     index = index || 0;
 
-    if (index === $fields.length) {
-      return true;
+    if (index < 0) {
+      complete();
+      return;
+    }
+
+    if (index >= $fields.length) {
+      complete();
+      return;
     }
 
     $field = $fields[index];
 
     if ($field.prop('disabled')) {
-      return traverseTree(index + 1);
+      traverseTree(index - 1);
+      return;
     }
 
-    for (value = 1; value <= 9; value += 1) {
+    value = Number($field.val() || 0);
 
-      $field.val(value);
-      if (validate(index)) {
-        if (traverseTree(index + 1)) {
-          return true;
+    if (value >= 9) {
+      $field.val('');
+      window.setTimeout(function() {
+        traverseTree(index - 1);
+      }, 1);
+      return;
+    }
+
+    $field.val(value + 1);
+
+    if (validate(index)) {
+      while ((index += 1) < $fields.length) {
+        if (!$fields[index].prop('disabled')) {
+          break;
         }
       }
+      window.setTimeout(function() {
+        traverseTree(index);
+      }, 1);
+    } else {
+      traverseTree(index);
     }
-
-    $field.val('');
-    return false;
   }
 
   /**
