@@ -1,0 +1,34 @@
+html, body {
+  text-align: center;
+  width: 100%;
+}
+
+form {
+  display: inline-block;
+  width: 504px;
+  text-align: center;
+  width: 504px;
+}
+
+input[type="number"] {
+  text-align: center;
+  font-size: 16px;
+  width: 48px;
+}
+
+input[type="number"][disabled] {
+  font-weight: bold;
+}
+
+input[type="button"], input[type="submit"] {
+  margin: 8px;
+}
+
+input:nth-child(3n) {
+  display: inline;
+  margin-right: 8px;
+}
+
+input:nth-child(27n) {
+  margin-bottom: 8px;
+}
